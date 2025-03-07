@@ -1,5 +1,5 @@
 {
-  "name": "element-pro-components",
+  "name": "pro-components-element-plus",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@element-pro-components/components": "workspace:*"
+    "@pro-components-element-plus/components": "workspace:*"
   },
   "keywords": [],
   "author": "",

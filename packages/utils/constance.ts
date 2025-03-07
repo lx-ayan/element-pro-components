@@ -1,0 +1,1 @@
+export const FORM_EMPTY_PLACEHOLDER = '内容';
