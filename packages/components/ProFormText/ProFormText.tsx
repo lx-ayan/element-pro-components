@@ -44,7 +44,7 @@ const ProFormText = defineComponent({
             clear: () => {
                 innerValue.value = '';
             }
-        })
+        });
 
         return () => <ElFormItem prop={props.name} rules={props.rules} {...props.formItemRule}>
             {
@@ -59,10 +59,10 @@ const ProFormText = defineComponent({
                         {...props.inputProps}
                     >
                         {{
-                            prefix: getSlotOrJSX<typeof props>('prefixIcon', slots, props),
-                            suffix: getSlotOrJSX<typeof props>('suffixIcon', slots, props),
-                            prepend: getSlotOrJSX<typeof props>('prepend', slots, props),
-                            append: getSlotOrJSX<typeof props>('append', slots, props),
+                            prefix: (props.prefixIcon || slots.prefixIcon)? getSlotOrJSX<typeof props>('prefixIcon', slots, props): null,
+                            suffix: (props.suffixIcon || slots.suffixIcon)? getSlotOrJSX<typeof props>('suffixIcon', slots, props): null,
+                            prepend: (props.prepend || slots.prepend)? getSlotOrJSX<typeof props>('prepend', slots, props): null,
+                            append: (props.append || slots.append)? getSlotOrJSX<typeof props>('append', slots, props): null,
                         }}
                     </ElInput>
                 }
