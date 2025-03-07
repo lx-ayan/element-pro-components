@@ -1,0 +1,30 @@
+{
+  "name": "@element-pro-components/workspace-root",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@element-pro-components/hooks": "workspace:*",
+    "@element-pro-components/utils": "workspace:*",
+    "@types/node": "^22.9.0",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vitejs/plugin-vue-jsx": "^4.0.1",
+    "@vue/tsconfig": "^0.5.1",
+    "element-plus": "^2.9.5",
+    "element-pro-components": "workspace:*",
+    "move-file-cli": "^3.0.0",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.81.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "vitepress": "^1.4.2",
+    "vue": "^3.4.19",
+    "vue-tsc": "^2.1.8"
+  }
+}
