@@ -45,7 +45,7 @@ const ProFormRadioProps = defineComponent({
         size: String as PropType<RadioProps['size']>,
         textColor: String,
         radioGroupProps: Object as PropType<RadioGroupProps>,
-        radioItemProps: Object as PropType<RadioProps | RadioButtonProps>
+        radioProps: Object as PropType<RadioProps | RadioButtonProps>
     },
     setup: (props, attrs) => {
         const { emit, slots, expose } = attrs;
@@ -85,10 +85,10 @@ const ProFormRadioProps = defineComponent({
             {
                 innerOption.value.map(item => {
                     return props.direction === 'vertical' ? <ElCol>
-                        <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]}>
+                        <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} {...props.radioProps}>
                             {item.render(item)}
                         </ElRadio>
-                    </ElCol> : <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]}>
+                    </ElCol> : <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} {...props.radioProps}>
                         {item.render(item)}
                     </ElRadio>
                 })
@@ -99,11 +99,11 @@ const ProFormRadioProps = defineComponent({
             {
                 innerOption.value.map(item => {
                     return props.direction === 'vertical' ? <ElCol>
-                        <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                        <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]} {...props.radioProps}>
                             {item.render(item)}
                         </ElRadio>
                     </ElCol> :
-                        <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                        <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]} {...props.radioProps}>
                             {item.render(item)}
                         </ElRadio>
                 })
@@ -114,11 +114,11 @@ const ProFormRadioProps = defineComponent({
             {
                 innerOption.value.map(item => {
                     return props.direction === 'vertical' ? <ElCol>
-                        <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                        <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]} {...props.radioProps}>
                             {item.render(item)}
                         </ElRadioButton>
                     </ElCol> :
-                        <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                        <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]} {...props.radioProps}>
                             {item.render(item)}
                         </ElRadioButton>
 
