@@ -2,7 +2,7 @@ import { defineComponent, PropType, readonly } from "vue";
 import { ElInput, ElFormItem, FormItemRule, FormItemProps, InputProps } from 'element-plus';
 import useVModel from "@pro-components-element-plus/hooks/useVModel";
 import { isString } from "lodash-es";
-import { FORM_EMPTY_PLACEHOLDER, getSlotOrJSX, VueNode } from "@pro-components-element-plus/utils";
+import { FORM_EMPTY_PLACEHOLDER, getSlotOrJSX, StringOrVueNode, VueNode } from "@pro-components-element-plus/utils";
 import { Arrayable } from "element-plus/es/utils";
 
 const ProFormText = defineComponent({
@@ -15,8 +15,8 @@ const ProFormText = defineComponent({
         rules: {
             type: Object as PropType<Arrayable<FormItemRule>>
         },
-        label: [String, Object, Function] as PropType<string | VueNode | (() => VueNode)>,
-        formItemRule: Object as PropType<FormItemProps>,
+        label: [String, Object, Function] as PropType<StringOrVueNode>,
+        formItemProps: Object as PropType<FormItemProps>,
         placeholder: {
             type: String,
             default: '请输入'
@@ -26,10 +26,10 @@ const ProFormText = defineComponent({
         readonly: Boolean,
         type: String,
         clearable: Boolean,
-        prefixIcon: [String, Object, Function] as PropType<string | VueNode | (() => VueNode)>,
-        suffixIcon: [String, Object, Function] as PropType<string | VueNode | (() => VueNode)>,
-        prepend: [String, Object, Function] as PropType<string | VueNode | (() => VueNode)>,
-        append: [String, Object, Function] as PropType<string | VueNode | (() => VueNode)>,
+        prefixIcon: [String, Object, Function] as PropType<StringOrVueNode>,
+        suffixIcon: [String, Object, Function] as PropType<StringOrVueNode>,
+        prepend: [String, Object, Function] as PropType<StringOrVueNode>,
+        append: [String, Object, Function] as PropType<StringOrVueNode>,
         inputProps: Object as PropType<InputProps>
     },
     setup(props, attrs) {
@@ -46,7 +46,7 @@ const ProFormText = defineComponent({
             }
         });
 
-        return () => <ElFormItem prop={props.name} rules={props.rules} {...props.formItemRule}>
+        return () => <ElFormItem prop={props.name} rules={props.rules} {...props.formItemProps}>
             {
                 {
                     label: getSlotOrJSX<typeof props>('label', slots, props),
