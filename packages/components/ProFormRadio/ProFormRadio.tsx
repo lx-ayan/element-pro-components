@@ -1,6 +1,6 @@
 import useVModel from "@pro-components-element-plus/hooks/useVModel";
 import { BasicType, FormOptionData, getSlotOrJSX, OptionData, StringOrVueNode } from "@pro-components-element-plus/utils";
-import { ElFormItem, ElRadio, ElRadioButton, ElRadioGroup, FormItemProps, FormItemRule, ItemSize, RadioButtonProps, RadioGroupProps, RadioProps } from "element-plus";
+import { ElCol, ElFormItem, ElRadio, ElRadioButton, ElRadioGroup, ElRow, FormItemProps, FormItemRule, ItemSize, RadioButtonProps, RadioGroupProps, RadioProps } from "element-plus";
 import { Arrayable } from "element-plus/es/utils";
 import { isFunction } from "lodash-es";
 import { defineComponent, onMounted, PropType, ref, watch } from "vue";
@@ -24,6 +24,10 @@ const ProFormRadioProps = defineComponent({
         valueName: {
             type: String,
             default: 'value'
+        },
+        direction: {
+            type: String as PropType<'row' | 'vertical'>,
+            default: 'row'
         },
         // About Form
         name: {
@@ -80,7 +84,11 @@ const ProFormRadioProps = defineComponent({
         const RenderDefault = () => <>
             {
                 innerOption.value.map(item => {
-                    return <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                    return props.direction === 'vertical' ? <ElCol>
+                        <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]}>
+                            {item.render(item)}
+                        </ElRadio>
+                    </ElCol> : <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]}>
                         {item.render(item)}
                     </ElRadio>
                 })
@@ -90,9 +98,14 @@ const ProFormRadioProps = defineComponent({
         const RenderBorder = () => <>
             {
                 innerOption.value.map(item => {
-                    return <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
-                        {item.render(item)}
-                    </ElRadio>
+                    return props.direction === 'vertical' ? <ElCol>
+                        <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                            {item.render(item)}
+                        </ElRadio>
+                    </ElCol> :
+                        <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                            {item.render(item)}
+                        </ElRadio>
                 })
             }
         </>
@@ -100,9 +113,15 @@ const ProFormRadioProps = defineComponent({
         const RenderButton = () => <>
             {
                 innerOption.value.map(item => {
-                    return <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
-                        {item.render(item)}
-                    </ElRadioButton>
+                    return props.direction === 'vertical' ? <ElCol>
+                        <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                            {item.render(item)}
+                        </ElRadioButton>
+                    </ElCol> :
+                        <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                            {item.render(item)}
+                        </ElRadioButton>
+
                 })
             }
         </>
@@ -128,9 +147,11 @@ const ProFormRadioProps = defineComponent({
             {
                 {
                     label: getSlotOrJSX<typeof props>('label', slots, props),
-                    default: () => <ElRadioGroup {...props.radioGroupProps} onChange={handleChange} text-color={props.textColor} v-model={innerValue.value}>
-                        <RenderInstance />
-                    </ElRadioGroup>
+                    default: () => <ElRow>
+                        <ElRadioGroup {...props.radioGroupProps} onChange={handleChange} text-color={props.textColor} v-model={innerValue.value}>
+                            <RenderInstance />
+                        </ElRadioGroup>
+                    </ElRow>
                 }
             }
         </ElFormItem>

@@ -11,6 +11,7 @@ export type StringOrVueNode = string | VueNode | (() => VueNode);
 export interface OptionData {
     label: string,
     value: any,
+    span?: number;
     disabled?: boolean;
     render?: (item: any) => VueNode;
 }
