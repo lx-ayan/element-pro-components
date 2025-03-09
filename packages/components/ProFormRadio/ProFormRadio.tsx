@@ -37,6 +37,7 @@ const ProFormRadioProps = defineComponent({
         formItemProps: Object as PropType<FormItemProps>,
         modelValue: String,
         // About Radio
+        disabled: Boolean,
         size: String as PropType<RadioProps['size']>,
         textColor: String,
         radioGroupProps: Object as PropType<RadioGroupProps>,
@@ -79,7 +80,7 @@ const ProFormRadioProps = defineComponent({
         const RenderDefault = () => <>
             {
                 innerOption.value.map(item => {
-                    return <ElRadio size={props.size} disabled={item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                    return <ElRadio size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
                         {item.render(item)}
                     </ElRadio>
                 })
@@ -89,7 +90,7 @@ const ProFormRadioProps = defineComponent({
         const RenderBorder = () => <>
             {
                 innerOption.value.map(item => {
-                    return <ElRadio size={props.size} border={true} disabled={item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                    return <ElRadio size={props.size} border={true} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
                         {item.render(item)}
                     </ElRadio>
                 })
@@ -99,7 +100,7 @@ const ProFormRadioProps = defineComponent({
         const RenderButton = () => <>
             {
                 innerOption.value.map(item => {
-                    return <ElRadioButton size={props.size} disabled={item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
+                    return <ElRadioButton size={props.size} disabled={props.disabled || item.disabled} value={item[props.valueName]} key={item[props.valueName]}>
                         {item.render(item)}
                     </ElRadioButton>
                 })

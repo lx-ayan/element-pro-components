@@ -47,7 +47,7 @@ function handleChange(value, item) {
 
       </ProFormText>
 
-      <ProFormRadio @radio-change="handleChange" label="性别" name="sex" :data="getRadioData" v-model="model.sex">
+      <ProFormRadio disabled @radio-change="handleChange" label="性别" name="sex" :data="getRadioData" v-model="model.sex">
       </ProFormRadio>
     </el-form>
   </div>
