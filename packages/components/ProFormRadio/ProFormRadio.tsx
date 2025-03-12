@@ -1,9 +1,9 @@
+import useOptionData from "@pro-components-element-plus/hooks/useOptionData";
 import useVModel from "@pro-components-element-plus/hooks/useVModel";
 import { BasicType, FormOptionData, getSlotOrJSX, OptionData, StringOrVueNode } from "@pro-components-element-plus/utils";
 import { ElCol, ElFormItem, ElRadio, ElRadioButton, ElRadioGroup, ElRow, FormItemProps, FormItemRule, ItemSize, RadioButtonProps, RadioGroupProps, RadioProps } from "element-plus";
 import { Arrayable } from "element-plus/es/utils";
-import { isFunction } from "lodash-es";
-import { defineComponent, onMounted, PropType, ref, watch } from "vue";
+import { defineComponent, PropType } from "vue";
 
 const ProFormRadioProps = defineComponent({
     name: 'ProFormRadio',
@@ -47,39 +47,11 @@ const ProFormRadioProps = defineComponent({
         radioGroupProps: Object as PropType<RadioGroupProps>,
         radioProps: Object as PropType<RadioProps | RadioButtonProps>
     },
-    setup: (props, attrs) => {
-        const { emit, slots, expose } = attrs;
+    setup: (props, ctx) => {
+        const { emit, slots, expose } = ctx;
 
         const innerValue = useVModel('modelValue', props, emit);
-        const innerOption = ref<OptionData[]>([]);
-
-        onMounted(() => {
-            buildData();
-        });
-
-        watch(() => props.data, () => {
-            buildData();
-        }, { deep: true });
-
-        function buildData() {
-            if (isFunction(props.data)) {
-                props.data().then(res => {
-                    innerOption.value = res.map((item: any) => ({
-                        label: item[props.keyName],
-                        value: item[props.valueName],
-                        disabled: item.disabled,
-                        render: (current: any) => item.render ? item.render(current) : slots[`option-${item[props.valueName]}`] ? slots[`option-${item[props.valueName]}`]({ option: item }) : item[props.keyName]
-                    }))
-                })
-            } else {
-                innerOption.value = props.data.map((item: any) => ({
-                    label: item[props.keyName],
-                    value: item[props.valueName],
-                    disabled: item.disabled,
-                    render: (current: any) => item.render ? item.render(current) : slots[`option-${item[props.valueName]}`] ? slots[`option-${item[props.valueName]}`]({ option: item }) : item[props.keyName]
-                }))
-            }
-        }
+        let { innerOption, reset } = useOptionData(props, slots);
 
         const RenderDefault = () => <>
             {
@@ -143,7 +115,20 @@ const ProFormRadioProps = defineComponent({
             emit('radio-change', value, item);
         }
 
-        return () => <ElFormItem prop={props.name}>
+        expose({
+            resetData: () => {
+                reset(props.data, props.keyName, props.valueName).then((res: OptionData[]) => {
+                    innerOption.value = res.map(item => {
+                        return {
+                            ...item,
+                            render: (current: any) => item.render ? item.render(current) : slots[`option-${item[props.valueName]}`] ? slots[`option-${item[props.valueName]}`]({ option: item }) : item[props.keyName]
+                        }
+                    });
+                });
+            }
+        })
+
+        return () => <ElFormItem prop={props.name} rules={props.rules} {...props.formItemProps}>
             {
                 {
                     label: getSlotOrJSX<typeof props>('label', slots, props),

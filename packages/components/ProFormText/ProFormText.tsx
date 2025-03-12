@@ -1,8 +1,7 @@
 import { defineComponent, PropType, readonly } from "vue";
 import { ElInput, ElFormItem, FormItemRule, FormItemProps, InputProps } from 'element-plus';
 import useVModel from "@pro-components-element-plus/hooks/useVModel";
-import { isString } from "lodash-es";
-import { FORM_EMPTY_PLACEHOLDER, getSlotOrJSX, StringOrVueNode, VueNode } from "@pro-components-element-plus/utils";
+import { getSlotOrJSX, StringOrVueNode } from "@pro-components-element-plus/utils";
 import { Arrayable } from "element-plus/es/utils";
 
 const ProFormText = defineComponent({
@@ -32,13 +31,11 @@ const ProFormText = defineComponent({
         append: [String, Object, Function] as PropType<StringOrVueNode>,
         inputProps: Object as PropType<InputProps>
     },
-    setup(props, attrs) {
-        const { emit, slots, expose } = attrs;
+    setup(props, ctx) {
+        const { emit, slots, expose } = ctx;
 
         //@ts-ignore
         const innerValue = useVModel<typeof props>('modelValue', props, emit);
-
-        const placeholder = `${props.placeholder}${isString(props.label) ? props.label : FORM_EMPTY_PLACEHOLDER}`;
 
         expose({
             clear: () => {
@@ -55,7 +52,7 @@ const ProFormText = defineComponent({
                         disabled={props.disabled}
                         readonly={props.readonly}
                         v-model={innerValue.value}
-                        placeholder={placeholder}
+                        placeholder={props.placeholder}
                         {...props.inputProps}
                     >
                         {{
