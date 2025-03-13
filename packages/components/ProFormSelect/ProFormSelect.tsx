@@ -1,10 +1,10 @@
+import { defineComponent, PropType } from "vue";
 import useOptionData from "@pro-components-element-plus/hooks/useOptionData";
 import useVModel from "@pro-components-element-plus/hooks/useVModel";
-import { FormOptionData, getSlotOrJSX, StringOrVueNode } from "@pro-components-element-plus/utils";
+import { FormOptionData, getSlotOrJSX, OptionData, StringOrVueNode } from "@pro-components-element-plus/utils";
 import { ElFormItem, ElOption, ElSelect, FormItemProps, FormItemRule, RadioProps } from "element-plus";
 import { SelectProps } from "element-plus/es/components/select/src/select";
 import { Arrayable } from "element-plus/es/utils";
-import { defineComponent, PropType } from "vue";
 
 const ProFormSelect = defineComponent({
     name: 'ProFormSelect',
@@ -41,16 +41,20 @@ const ProFormSelect = defineComponent({
         },
         size: String as PropType<RadioProps['size']>,
         textColor: String,
-        selectProps: SelectProps
+        selectProps: Object as PropType<typeof SelectProps>,
+        loadingRender: [String, Object, Function] as PropType<StringOrVueNode>,
+        loading: Boolean,
+        multiple: Boolean
     },
-    setup(props, ctx) {
+    setup: (props, ctx) => {
         const { slots, expose, emit } = ctx;
         const innerValue = useVModel('modelValue', props, emit);
         const { innerOption, reset } = useOptionData(props, slots);
-
+        const innerLoading = useVModel<typeof props>('loading', props, emit);
 
         expose({
             resetData: () => {
+                innerLoading.value = true;
                 reset(props.data, props.keyName, props.valueName).then((res: OptionData[]) => {
                     innerOption.value = res.map(item => {
                         return {
@@ -58,6 +62,8 @@ const ProFormSelect = defineComponent({
                             render: (current: any) => item.render ? item.render(current) : slots[`option-${item[props.valueName]}`] ? slots[`option-${item[props.valueName]}`]({ option: item }) : item[props.keyName]
                         }
                     });
+                }).finally(() => {
+                    innerLoading.value = false;
                 });
             }
         })
@@ -66,13 +72,16 @@ const ProFormSelect = defineComponent({
             {
                 {
                     label: getSlotOrJSX<typeof props>('label', slots, props),
-                    default: () => <ElSelect placeholder={props.placeholder} v-model={innerValue.value}>
+                    default: () => <ElSelect multiple={props.multiple} loading={innerLoading.value} size={props.size} placeholder={props.placeholder} v-model={innerValue.value} {...props.selectProps}>
                         {
-                            innerOption.value.map(item => (
-                                <ElOption key={item.value} value={item.value} label={item.label}>
-                                    {item.render(item)}
-                                </ElOption>
-                            ))
+                            {
+                                default: innerOption.value.map(item => (
+                                    <ElOption key={item.value} value={item.value} label={item.label}>
+                                        {item.render(item)}
+                                    </ElOption>
+                                )),
+                                loading: props.loadingRender ? getSlotOrJSX<typeof props>('loadingRender', slots, props) : null,
+                            }
                         }
                     </ElSelect>
                 }

@@ -65,6 +65,10 @@ function handleChange(value, item) {
   console.log('value', value);
   console.log('item', item);
 }
+
+const loadingRender = () => <div>
+  asdasd
+</div>
 </script>
 
 <template>
@@ -79,7 +83,7 @@ function handleChange(value, item) {
         v-model="model.sex">
       </ProFormRadio>
 
-      <ProFormSelect :data="selectOptions" key-name="label1" value-name="value1" label="学历" name="education" v-model="model.education">
+      <ProFormSelect :loadingRender :data="selectOptions" key-name="label1" value-name="value1" label="学历" name="education" v-model="model.education">
         <template #option-3="{option}">
           <div>
             {{ option.label1 }} 插槽形式
